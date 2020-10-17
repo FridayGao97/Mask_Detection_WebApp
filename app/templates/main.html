@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<head>
+    <title>ECE1779 Project One</title>
+</head>
+<html>
+    <body>
+        <h1> Welcome to the System of Face Mask Detection </h1>
+        
+        <h3>Log in to My Account</h3>
+        
+            <form method = 'post' action = "{{url_for('user_login_main')}}">
+                
+                <div>
+                <label>Name</label>
+                <input input type='text' name='name' value='{{name if name != None}}'>
+                </div>
+
+                <div>
+                <label>Password</label>
+                <input input type='text' name='password' value='{{password if password != None}}'>
+                </div>
+
+                <input type="submit" value="Log In">
+            </form> 
+            
+            <div><a href="{{url_for('recoverByEmail')}}">Forget Password ?</a></div>
+
+
+    <body>    
+</html>

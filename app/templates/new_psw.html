@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Change Your Passwords</title>
+</head>
+<html>
+  <body>
+      <h2>Change Password</h2>
+
+      <form method = 'post' action = "{{url_for('change_psw_save')}}">
+
+          <div>
+          <label>User Name</label>
+          <input input type='text' name='name' value='{{name if name != None}}'>
+          </div>
+          <br>
+
+          <div>
+          <label>Old Password</label>
+          <input input type='text' name='oldpassword' value='{{oldpassword if oldpassword != None}}'>
+          </div>
+          <br>
+
+          <div>
+          <label>New Password</label>
+          <input input type='text' name='new1password' value='{{new1password if new1password != None}}'>
+          </div>
+          <br>
+
+          <div>
+          <label>Confirm New Password</label>
+          <input input type='text' name='new2password' value='{{new2password if new2password != None}}'>
+          </div>
+          <br>
+          
+          <div><input type="submit" value="Submit"></div>
+
+      </form>
+
+  </body>
+</html>
