@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Register</title>
+</head>
+<html>
+  <body>
+      <h2>Register</h2>
+
+        {% if message %}
+            <P>Success: {{message}}</P>
+            <br>
+            <br>
+            <a href="{{url_for('main')}}">Start to Log In</a>
+            <br>
+
+        {% else %}
+            <form action="{{url_for('user_register_save')}}" method="post">
+            
+              <div>
+              <label>Name</label>
+              <input input type='text' name='username' value='{{username if username != None}}'>
+              </div>
+
+              <div>
+              <label>Email</label>
+              <input input type='text' name='email' value='{{email if eamil != None}}'>
+              </div>
+
+              <div>
+              <label>Password</label>
+              <input input type='text' name='password' value='{{password if password != None}}'>
+              </div>
+
+              <div><input type="submit" value="Submit"></div>
+
+            </form> 
+        {% endif %}
+  </body>
+</html>

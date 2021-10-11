@@ -1,0 +1,3 @@
+#!/bin/bash
+cd home/ubuntu/Desktop
+echo test > test.txt

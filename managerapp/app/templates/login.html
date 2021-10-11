@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<head>
+    <title>ECE1779 Project Two</title>
+</head>
+<html>
+    <body>
+        <h1> Welcome to the Manager System </h1>
+        
+        <h3>Log in to Manager Account</h3>
+        
+            <form method = 'post' action = "{{url_for('user_login_main')}}">
+                
+                <div>
+                <label>Name</label>
+                <input input type='text' name='name' value='{{name if name != None}}'>
+                </div>
+
+                <div>
+                <label>Password (in lowercase)</label>
+                <input input type='text' name='password' value='{{password if password != None}}'>
+                </div>
+
+                <input type="submit" value="Log In">
+            </form> 
+            
+
+    <body>    
+</html>

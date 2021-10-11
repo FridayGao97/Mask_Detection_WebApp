@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Upload</title>
+</head>
+<html>
+  <body>
+    <h2>Upload photos</h2>
+
+    <div></div>
+
+    <p>
+      {% if message %}
+      {{ message }}
+      {% endif %}
+    </p>
+
+    {% if message %}
+    <ul>
+      <li >Number of Faces: {{num_face}}</li>
+      <li >Number of Masked: {{num_maksed}}</li>
+      <li >Number of Unmasked: {{num_unmasked}}</li>
+    </ul>
+    {% endif %}
+
+    <div>
+      {% if uid %}
+      <br>
+      <form action="{{url_for('user_pages',id=uid)}}" method='get'>
+        <input type='submit' value='Back to Account Page' />
+      </form>
+      <br>
+      {% endif %}
+    </div>
+
+    {% if filename %}
+      <div>
+        <img src="{{ url_for('display_history', filename=filename) }}">
+      </div>
+    {% endif %}
+
+    {% if not filename %}
+     <form method = 'post' action = "{{url_for('get_image')}}" enctype="multipart/form-data">
+      
+          <label for="username">User name:</label><br>
+          <input type="text" id="username" name="username"><br>
+
+          <label for="password">Password:</label><br>
+          <input type="text" id="password" name="password"><br>
+
+          <p>type a URL or chose a file for uploading</p>
+          <input type="file" id="file" name="file"><br>
+          OR<br>
+          URL<input type="text" id="imgurl" name="imgurl"><br><br>
+          
+          <input type="submit" value="Submit">
+          <input type="reset">
+      </form> 
+    {% endif %}
+  </body>
+</html>

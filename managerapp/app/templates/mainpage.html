@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<head>
+    <title>Manager Main Page</title>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+  <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>  -->
+
+    <style>
+        ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          background-color: #333333;
+          display: inline-flex;
+        }
+        
+        
+        
+        #menu li a {
+          display: block;
+          color: white;
+          text-align: center;
+          padding: 24px;
+          text-decoration: none;
+        }
+        
+        #menu li a:hover {
+          background-color: #111111;
+        }
+    </style>
+
+</head>
+
+
+<html>
+    <body>
+        <h1> Hello Admin </h1>
+        <ul id="menu">
+            <li ><a href="#workers_list">Workers List</a></li>
+            <li ><a href="#workers_num">Number of Workers</a></li>
+            <li ><a href="http://ece1779-a2-elb-463848100.us-east-1.elb.amazonaws.com/">ECE1779-A2-ELB</a></li>
+            <li ><a href="#Configure_auto_scaling">Configure Auto-scaling Policy</a></li>
+            
+            <li ><a href="{{url_for('stop_manager')}}">Stop Manager</a></li>
+            <li ><a href="{{url_for('delete_data')}}">Delete all data</a></li>
+
+            <li><a href="{{url_for('refresh_page')}}">Refresh</a></li>
+            
+        </ul>
+        <hr>
+        
+
+        <table id="workers_list">
+            <thead>
+              <th>ID</th>
+              <th>Port</th>
+              <th>State</th>
+              <th>Charts</th>
+            </thead>
+
+            <tbody>
+                
+                {% for row in worker_data %}
+                    <tr>
+                    <td>{{ row[0]|tojson|safe }}</td>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2]|tojson|safe }}</td>
+                    <td>
+                        <a href="{{ url_for('instance_charts', instance_id = row[0]) }}">
+                            
+                        <button type="button">
+                        "View Chart"
+                        </button>
+                        </a>
+
+                    </td>
+                    </tr>
+                {% endfor %}
+
+              </tbody>
+        </table>
+
+        <br>
+        <form method = 'post' action = "{{url_for('grow_pool')}}">
+            <input type="submit" value="Grow worker pool size by 1">
+        </form> 
+        <form method = 'post' action = "{{url_for('shrink_pool')}}">
+            <input type="submit" value="Shrink worker pool size by 1">
+        </form> 
+        
+        <br><hr><br>
+
+
+        <center>
+            <h1 id="workers_num">the number of the worker for the past 30 minutes</h1>
+        
+            <canvas id="numchart" width="600" height="400"></canvas>
+            <script>
+        
+              // chart data
+                var barData = {
+                    labels : [
+                    {% for item in numlabels %}
+                        "{{ item }}",
+                    {% endfor %}
+                    ],
+            
+                    datasets : [{
+                        fillColor: "rgba(151,187,205,0.2)",
+                        strokeColor: "rgba(151,187,205,1)",
+                        pointColor: "rgba(151,187,205,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(151,187,205,1)",
+                        bezierCurve : false,
+                        data : [
+                            {% for item in numvalues %}
+                                {{ item }},
+                                {% endfor %}]
+                    }
+                    ]
+                }
+            
+                Chart.defaults.global.animationSteps = 50;
+                Chart.defaults.global.tooltipYPadding = 16;
+                Chart.defaults.global.tooltipCornerRadius = 0;
+                Chart.defaults.global.tooltipTitleFontStyle = "normal";
+                Chart.defaults.global.tooltipFillColor = "rgba(0,0,0,0.8)";
+                Chart.defaults.global.animationEasing = "easeOutBounce";
+                Chart.defaults.global.responsive = false;
+                Chart.defaults.global.scaleLineColor = "black";
+                Chart.defaults.global.scaleFontSize = 16;
+            
+                // get chart canvas
+                var mychart = document.getElementById("numchart").getContext("2d");
+            
+                steps = 10
+                max = {{ max }}
+                // draw chart
+                var LineChartDemo = new Chart(mychart).Line(barData, {
+                    scaleOverride: true,
+                    scaleSteps: steps,
+                    scaleStepWidth: Math.ceil(max / steps),
+                    scaleStartValue: 0,
+                    scaleShowVerticalLines: true,
+                    scaleShowGridLines : true,
+                    barShowStroke : true,
+                    scaleShowLabels: true,
+                    bezierCurve: false,
+                });
+        
+            </script>
+        </center>
+          
+        <br><hr><br>
+
+
+        <h2 id="Configure_auto_scaling">Configure Auto-scaling Policy</h2>
+        <form method = 'post' action = "{{url_for('configure')}}">
+                
+            <div>
+            <label>CPU Threshold to Grow</label>
+            <input input type='text' name='CPU_grow' value='{{CPU_grow if CPU_grow != None}}'>
+            </div>
+
+            <div>
+            <label>CPU Threshold to Shrink</label>
+            <input input type='text' name='CPU_shrink' value='{{CPU_shrink if CPU_shrink != None}}'>
+            </div>
+
+            <div>
+            <label>Ratio of Expend</label>
+            <input input type='text' name='ratio_expend' value='{{ratio_expend if ratio_expend != None}}'>
+            </div>
+
+            <div>
+            <label>Ratio of Shrink</label>
+            <input input type='text' name='ratio_shrink' value='{{ratio_shrink if ratio_shrink != None}}'>
+            </div>
+
+            <input type="submit" value="Log In">
+        </form> 
+
+
+
+    <body>    
+</html>

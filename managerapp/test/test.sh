@@ -1,0 +1,1 @@
+python3.8 gen.py http://ece1779-a2-elb-463848100.us-east-1.elb.amazonaws.com/api/upload Qixuan 123456 10 ./photos/ 10000

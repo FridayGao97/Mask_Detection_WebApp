@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Two charts for instace: {{id}}</title>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+  <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>  -->
+</head>
+<body>
+
+    <center>
+        <h1>Two charts for instace: {{id}}</h1>
+        <h3>the total CPU utilization of the worker for the past 30 minutes</h3>
+    
+        <canvas id="CPUchart" width="600" height="400"></canvas>
+        <script>
+    
+          // chart data
+            var barData = {
+                labels : [
+                {% for item in CPUlabels %}
+                    "{{ item }}",
+                {% endfor %}
+                ],
+        
+                datasets : [{
+                    fillColor: "rgba(151,187,205,0.2)",
+                    strokeColor: "rgba(151,187,205,1)",
+                    pointColor: "rgba(151,187,205,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(151,187,205,1)",
+                    bezierCurve : false,
+                    data : [
+                        {% for item in CPUvalues %}
+                            {{ item }},
+                            {% endfor %}]
+                }
+                ]
+            }
+        
+            Chart.defaults.global.animationSteps = 50;
+            Chart.defaults.global.tooltipYPadding = 16;
+            Chart.defaults.global.tooltipCornerRadius = 0;
+            Chart.defaults.global.tooltipTitleFontStyle = "normal";
+            Chart.defaults.global.tooltipFillColor = "rgba(0,0,0,0.8)";
+            Chart.defaults.global.animationEasing = "easeOutBounce";
+            Chart.defaults.global.responsive = false;
+            Chart.defaults.global.scaleLineColor = "black";
+            Chart.defaults.global.scaleFontSize = 16;
+        
+            // get chart canvas
+            var mychart = document.getElementById("CPUchart").getContext("2d");
+        
+            steps = 10
+            max = {{ max }}
+            // draw chart
+            var LineChartDemo = new Chart(mychart).Line(barData, {
+                scaleOverride: true,
+                scaleSteps: steps,
+                scaleStepWidth: Math.ceil(max / steps),
+                scaleStartValue: 0,
+                scaleShowVerticalLines: true,
+                scaleShowGridLines : true,
+                barShowStroke : true,
+                scaleShowLabels: true,
+                bezierCurve: false,
+            });
+    
+        </script>
+    </center>
+    
+    <br><hr><br>
+
+    <center>
+        <h3>the rate of HTTP requests received by the worker in each minute for the past 30 minutes</h3>
+    
+        <canvas id="Reqchart" width="600" height="400"></canvas>
+        <script>
+    
+          // chart data
+            var barData = {
+                labels : [
+                {% for item in Reqlabels %}
+                    "{{ item }}",
+                {% endfor %}
+                ],
+        
+                datasets : [{
+                    fillColor: "rgba(151,187,205,0.2)",
+                    strokeColor: "rgba(151,187,205,1)",
+                    pointColor: "rgba(151,187,205,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(151,187,205,1)",
+                    bezierCurve : false,
+                    data : [
+                        {% for item in Reqvalues %}
+                            {{ item }},
+                            {% endfor %}]
+                }
+                ]
+            }
+        
+            Chart.defaults.global.animationSteps = 50;
+            Chart.defaults.global.tooltipYPadding = 16;
+            Chart.defaults.global.tooltipCornerRadius = 0;
+            Chart.defaults.global.tooltipTitleFontStyle = "normal";
+            Chart.defaults.global.tooltipFillColor = "rgba(0,0,0,0.8)";
+            Chart.defaults.global.animationEasing = "easeOutBounce";
+            Chart.defaults.global.responsive = false;
+            Chart.defaults.global.scaleLineColor = "black";
+            Chart.defaults.global.scaleFontSize = 16;
+        
+            // get chart canvas
+            var mychart = document.getElementById("Reqchart").getContext("2d");
+        
+            steps = 10
+            max = 30
+            // draw chart
+            var LineChartDemo = new Chart(mychart).Line(barData, {
+                scaleOverride: true,
+                scaleSteps: steps,
+                scaleStepWidth: Math.ceil(max / steps),
+                scaleStartValue: 0,
+                scaleShowVerticalLines: true,
+                scaleShowGridLines : true,
+                barShowStroke : true,
+                scaleShowLabels: true,
+                bezierCurve: false,
+            });
+    
+        </script>
+    </center>
+
+</body>
+</html>
